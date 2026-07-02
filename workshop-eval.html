@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تقييم الورشة | Workshop Evaluation</title>
+<style>
+
+  :root{
+    --navy:#1B2A56; --maroon:#8E1B3A; --gold:#C9A35C;
+    --green:#1E7145; --ink:#262B36; --muted:#667085;
+    --line:#D7DEE8; --pale:#EAF0F8; --bg:#F4F6FA;
+  }
+
+
+  *{box-sizing:border-box;}
+  body{font-family:'Segoe UI','Tahoma',Arial,sans-serif;background:var(--bg);color:var(--ink);margin:0;direction:rtl;}
+  .wrap{max-width:740px;margin:0 auto;padding:20px 16px 60px;}
+  header{background:var(--navy);color:#fff;border-radius:14px;padding:24px 22px;text-align:center;margin-bottom:20px;}
+  header h1{font-size:26px;margin:0 0 5px;}
+  header p{margin:0;color:#C7D2E8;font-size:13px;font-style:italic;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(20,30,60,.05);}
+  .btn{display:block;width:100%;background:var(--maroon);color:#fff;border:none;border-radius:10px;padding:15px;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(142,27,58,.22);}
+  .btn:disabled{background:#B9BFCC;cursor:not-allowed;box-shadow:none;}
+  .thankyou{display:none;background:#fff;border-radius:14px;padding:32px 22px;text-align:center;border:2px solid var(--gold);}
+  .thankyou h2{color:var(--navy);margin:0 0 8px;}
+  .thankyou p{color:var(--muted);font-size:13px;}
+  footer{text-align:center;font-size:11px;color:var(--muted);margin-top:28px;}
+  .req{color:var(--maroon);}
+  /* progress bar */
+  .prog-wrap{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);position:sticky;top:10px;z-index:5;}
+  .prog-bar{flex:1;height:8px;background:var(--pale);border-radius:6px;margin:0 12px;overflow:hidden;}
+  .prog-fill{height:100%;background:var(--maroon);width:0%;transition:width .25s;}
+  /* quiz card */
+  .qnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--maroon);color:#fff;font-weight:700;font-size:14px;margin-left:10px;flex-shrink:0;}
+  .qrow{display:flex;align-items:flex-start;margin-bottom:8px;}
+  .qtext{font-size:16px;font-weight:700;line-height:1.5;}
+  .qen{font-size:11px;color:var(--muted);font-style:italic;margin:3px 0 12px 40px;}
+  .opt{display:block;border:1.5px solid var(--line);border-radius:9px;padding:11px 14px;margin:7px 0 7px 40px;cursor:pointer;font-size:14.5px;background:#fcfdff;transition:.15s;}
+  .opt:hover{border-color:var(--navy);}
+  .opt input{display:none;}
+  .opt.correct{border-color:var(--green)!important;background:#EAF6EE;font-weight:700;}
+  .opt.incorrect{border-color:#BF3B30!important;background:#FBEAEA;}
+  .opt.disabled{cursor:default;}
+  /* result */
+  .result{display:none;background:#fff;border-radius:14px;padding:28px 22px;text-align:center;border:2px solid var(--gold);margin-top:6px;}
+  .result h2{margin:0 0 4px;font-size:22px;color:var(--navy);}
+  .score-big{font-size:46px;font-weight:800;color:var(--maroon);margin:10px 0 2px;}
+  .level-pill{display:inline-block;padding:8px 22px;border-radius:30px;color:#fff;font-weight:700;font-size:15px;margin-top:10px;}
+  .result .note{font-size:12px;color:var(--muted);margin-top:12px;font-style:italic;}
+  /* eval */
+  select,textarea{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:10px;font-size:14.5px;font-family:inherit;background:#fcfdff;margin-top:6px;}
+  textarea{min-height:80px;resize:vertical;}
+  .qlabel{font-size:16px;font-weight:700;}
+  .qen2{font-size:11px;color:var(--muted);font-style:italic;margin:3px 0 8px;}
+  .scale{display:flex;justify-content:space-between;gap:8px;margin-top:8px;}
+  .scale label{flex:1;text-align:center;cursor:pointer;}
+  .scale input{display:none;}
+  .scale .dot{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:12px 4px;font-weight:700;font-size:16px;color:var(--muted);background:#fcfdff;transition:.15s;}
+  .scale input:checked + .dot{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+  .scale-caps{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:5px;}
+
+.star-row{display:flex;justify-content:center;gap:10px;margin:16px 0 4px;}
+.star-row label{cursor:pointer;font-size:36px;color:#D7DEE8;transition:.15s;}
+.star-row input:checked ~ label,.star-row label:hover,.star-row label:hover ~ label{color:var(--gold);}
+.stars{display:flex;flex-direction:row-reverse;justify-content:center;gap:10px;margin:16px 0 4px;}
+.stars input{display:none;}
+.stars label{cursor:pointer;font-size:36px;color:#D7DEE8;transition:.15s;}
+.stars label:hover,.stars label:hover ~ label,.stars input:checked ~ label{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>قيّم ورشة جودة إنجازات الطلبة</h1>
+    <p>Workshop Evaluation — GEMS Westminster School, Ras Al Khaimah</p>
+    <p style="margin-top:6px;color:#C7D2E8;font-size:12px;">دقيقتان فقط · Only 2 minutes</p>
+  </header>
+
+  <form id="evalForm">
+    <div class="card">
+      <div class="qlabel">القسم / المادة الدراسية <span class="req">*</span></div>
+      <div class="qen2">Department / subject taught</div>
+      <select id="dept" required>
+        <option value="" disabled selected>اختر قسمك... / Select your department</option>
+        <option>اللغة العربية</option>
+        <option>الدراسات الاجتماعية والتربية الوطنية</option>
+        <option>التربية الإسلامية</option>
+        <option>اللغة الإنجليزية</option>
+        <option>الرياضيات</option>
+        <option>العلوم</option>
+        <option>الفنون والتربية الموسيقية</option>
+        <option>التربية البدنية</option>
+        <option>تقنية المعلومات والحاسوب</option>
+        <option>قيادة وإدارة مدرسية</option>
+        <option>أخرى / Other</option>
+      </select>
+    </div>
+
+    
+    <div class="card">
+      <div class="qlabel">وضوح المحتوى وتنظيمه <span class="req">*</span></div>
+      <div class="qen2">Clarity and organisation of the content</div>
+      <div class="scale">
+        <label><input type="radio" name="q1" value="1" required><div class="dot">1</div></label><label><input type="radio" name="q1" value="2" required><div class="dot">2</div></label><label><input type="radio" name="q1" value="3" required><div class="dot">3</div></label><label><input type="radio" name="q1" value="4" required><div class="dot">4</div></label><label><input type="radio" name="q1" value="5" required><div class="dot">5</div></label>
+      </div>
+      <div class="scale-caps"><span>غير موافق تمامًا · Strongly disagree</span><span>موافق تمامًا · Strongly agree</span></div>
+    </div>
+    <div class="card">
+      <div class="qlabel">فائدة نشاط 'نحن نفعل' التطبيقي <span class="req">*</span></div>
+      <div class="qen2">Usefulness of the 'We do' practical activity</div>
+      <div class="scale">
+        <label><input type="radio" name="q2" value="1" required><div class="dot">1</div></label><label><input type="radio" name="q2" value="2" required><div class="dot">2</div></label><label><input type="radio" name="q2" value="3" required><div class="dot">3</div></label><label><input type="radio" name="q2" value="4" required><div class="dot">4</div></label><label><input type="radio" name="q2" value="5" required><div class="dot">5</div></label>
+      </div>
+      <div class="scale-caps"><span>غير موافق تمامًا · Strongly disagree</span><span>موافق تمامًا · Strongly agree</span></div>
+    </div>
+    <div class="card">
+      <div class="qlabel">إيقاع الورشة الزمني <span class="req">*</span></div>
+      <div class="qen2">Pacing of the session</div>
+      <div class="scale">
+        <label><input type="radio" name="q3" value="1" required><div class="dot">1</div></label><label><input type="radio" name="q3" value="2" required><div class="dot">2</div></label><label><input type="radio" name="q3" value="3" required><div class="dot">3</div></label><label><input type="radio" name="q3" value="4" required><div class="dot">4</div></label><label><input type="radio" name="q3" value="5" required><div class="dot">5</div></label>
+      </div>
+      <div class="scale-caps"><span>غير موافق تمامًا · Strongly disagree</span><span>موافق تمامًا · Strongly agree</span></div>
+    </div>
+    <div class="card">
+      <div class="qlabel">مدى استعدادك لتطبيق ما تعلّمته في حصصك القادمة <span class="req">*</span></div>
+      <div class="qen2">Your readiness to apply what you learned in your next lessons</div>
+      <div class="scale">
+        <label><input type="radio" name="q4" value="1" required><div class="dot">1</div></label><label><input type="radio" name="q4" value="2" required><div class="dot">2</div></label><label><input type="radio" name="q4" value="3" required><div class="dot">3</div></label><label><input type="radio" name="q4" value="4" required><div class="dot">4</div></label><label><input type="radio" name="q4" value="5" required><div class="dot">5</div></label>
+      </div>
+      <div class="scale-caps"><span>غير موافق تمامًا · Strongly disagree</span><span>موافق تمامًا · Strongly agree</span></div>
+    </div>
+
+    <div class="card">
+      <div class="qlabel">التقييم الإجمالي للورشة <span class="req">*</span></div>
+      <div class="qen2">Overall workshop rating</div>
+      <div class="stars" id="starsWrap">
+        <input type="radio" name="overall" id="s5" value="5" required><label for="s5" title="5 نجوم">★</label><input type="radio" name="overall" id="s4" value="4" required><label for="s4" title="4 نجوم">★</label><input type="radio" name="overall" id="s3" value="3" required><label for="s3" title="3 نجوم">★</label><input type="radio" name="overall" id="s2" value="2" required><label for="s2" title="2 نجوم">★</label><input type="radio" name="overall" id="s1" value="1" required><label for="s1" title="1 نجوم">★</label>
+      </div>
+      <div class="scale-caps"><span>ضعيفة · Poor</span><span>ممتازة · Excellent</span></div>
+    </div>
+
+    <div class="card">
+      <div class="qlabel">أكثر ما استفدت منه اليوم</div>
+      <div class="qen2">What was most useful to you today?</div>
+      <textarea id="q5" placeholder="اكتب هنا بحرية..."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="qlabel">ماذا تقترح تحسينه في الورشات القادمة؟</div>
+      <div class="qen2">What would you improve for future sessions?</div>
+      <textarea id="q6" placeholder="اقتراحاتك مهمة لنا..."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="qlabel">هل ستوصي زملاءك بهذه الورشة؟</div>
+      <div class="qen2">Would you recommend this workshop to colleagues?</div>
+      <select id="recommend" required>
+        <option value="" disabled selected>اختر... / Select</option>
+        <option value="نعم بشكل مؤكد">نعم، بشكل مؤكد · Absolutely yes</option>
+        <option value="نعم على الأغلب">على الأغلب · Probably yes</option>
+        <option value="غير متأكد">غير متأكد · Not sure</option>
+        <option value="لا على الأغلب">على الأغلب لا · Probably not</option>
+      </select>
+    </div>
+
+    <button class="btn" id="submitBtn" type="submit">إرسال التقييم · Submit Evaluation</button>
+  </form>
+
+  <div class="thankyou" id="ty">
+    <h2>شكرًا جزيلًا! ✓</h2>
+    <p>تم استلام تقييمك بنجاح.<br>تقييمك يُساعدنا في تطوير ورشات أكثر تأثيرًا.<br><br>Your evaluation has been received successfully.<br>Your feedback helps us design more impactful training sessions.</p>
+  </div>
+
+  <footer>GEMS Westminster School – Ras Al Khaimah · Quality of Students' Achievement Workshop</footer>
+</div>
+<script>
+
+const GS_URL="https://script.google.com/macros/s/AKfycbxQMBJIjmsyyIlZcM1XYPdpg83M6L9APn1d2_OcgiOKrVPOKgV4m_QitwQ8JLH_g4Y9/exec
+";
+function sendToSheet(data,onDone){
+  if(!GS_URL||GS_URL.startsWith("PASTE")){console.log("Sheet:",data);onDone();return;}
+  fetch(GS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)})
+    .then(onDone).catch(onDone);
+}
+
+
+document.getElementById("evalForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  const btn=document.getElementById("submitBtn");
+  btn.disabled=true;
+  btn.textContent="جارٍ الإرسال... · Sending...";
+
+  const overall=document.querySelector('input[name="overall"]:checked');
+  const data={
+    timestamp:new Date().toISOString(),
+    dept:document.getElementById("dept").value,
+    q1:document.querySelector('input[name="q1"]:checked')?.value||"",
+    q2:document.querySelector('input[name="q2"]:checked')?.value||"",
+    q3:document.querySelector('input[name="q3"]:checked')?.value||"",
+    q4:document.querySelector('input[name="q4"]:checked')?.value||"",
+    overall:overall?overall.value:"",
+    q5:document.getElementById("q5").value,
+    q6:document.getElementById("q6").value,
+    recommend:document.getElementById("recommend").value
+  };
+  sendToSheet(data,()=>{
+    document.getElementById("evalForm").style.display="none";
+    document.getElementById("ty").style.display="block";
+    document.getElementById("ty").scrollIntoView({behavior:"smooth"});
+  });
+});
+</script>
+</body>
+</html>
