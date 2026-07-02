@@ -107,8 +107,7 @@ const LEVELS=[
 ];
 
 
-const GS_URL="https://script.google.com/macros/s/AKfycby1mCPhJLhEol_QO2zWwVGu6j86wYysk-9IWGr-1sUEPpyil0bkqi7HJ6LiOFUJ4GKY/exec
-";
+const GS_URL="https://script.google.com/macros/s/AKfycby1mCPhJLhEol_QO2zWwVGu6j86wYysk-9IWGr-1sUEPpyil0bkqi7HJ6LiOFUJ4GKY/exec";
 function sendToSheet(data,onDone){
   if(!GS_URL||GS_URL.startsWith("PASTE")){console.log("Sheet:",data);onDone();return;}
   fetch(GS_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)})
