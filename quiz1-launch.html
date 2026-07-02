@@ -75,7 +75,17 @@
     <span>الإجابة الفردية</span>
   </div>
 
-  <form id="quizForm"></form>
+  
+  <div class="card" id="nameCard" style="border:1.5px solid var(--gold);">
+    <div style="font-size:16px;font-weight:700;margin-bottom:6px;">
+      الاسم الكامل <span style="color:var(--maroon);">*</span>
+      <span style="font-size:11px;font-weight:400;font-style:italic;color:var(--muted);margin-right:8px;">Full name</span>
+    </div>
+    <input id="participantName" type="text" required placeholder="اكتب اسمك هنا... / Enter your full name"
+      style="width:100%;border:1.5px solid var(--line);border-radius:9px;padding:11px 14px;
+             font-size:15px;font-family:inherit;background:#fcfdff;direction:rtl;">
+  </div>
+<form id="quizForm"></form>
 
   <div style="position:sticky;bottom:0;background:linear-gradient(180deg,rgba(244,246,250,0),var(--bg) 30%);padding:12px 0 4px;text-align:center;">
     <button class="btn" id="submitBtn" disabled style="max-width:340px;display:inline-block;">إرسال الإجابات · Submit</button>
@@ -150,6 +160,13 @@ ITEMS.forEach((item,qi)=>{
 });
 
 document.getElementById("submitBtn").addEventListener("click",function(){
+  const nameVal = document.getElementById("participantName").value.trim();
+  if(!nameVal){
+    document.getElementById("participantName").style.borderColor="#BF3B30";
+    document.getElementById("participantName").focus();
+    return;
+  }
+  document.getElementById("participantName").style.borderColor="var(--line)";
   let score=0;
   const answers=[];
   ITEMS.forEach((item,qi)=>{
@@ -178,6 +195,7 @@ document.getElementById("submitBtn").addEventListener("click",function(){
   document.getElementById("result").scrollIntoView({behavior:"smooth"});
 
   const data={
+    name:nameVal,
     timestamp:new Date().toISOString(),
     quiz:QUIZ_ID,
     score:score+"/"+total,
